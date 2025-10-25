@@ -1,9 +1,36 @@
+// Color mappings for puzzle groups
 const COLOR_MAP = {purple:'#9c27b0', blue:'#4da3ff', green:'#4caf50', yellow:'#ffca28'};
 const COLOR_EMOJI = {purple:'🟪', blue:'🟦', green:'🟩', yellow:'🟨'};
 const COLOR_REVERSE = {'#9c27b0':'purple', '#4da3ff':'blue', '#4caf50':'green', '#ffca28':'yellow'};
+
+/**
+ * Shorthand for document.querySelector
+ * @param {string} s - CSS selector
+ * @param {Element} r - Root element to search from (defaults to document)
+ * @returns {Element|null} The first matching element
+ */
 const $ = (s, r=document) => r.querySelector(s);
+
+/**
+ * Shorthand for document.querySelectorAll, returns array instead of NodeList
+ * @param {string} s - CSS selector
+ * @param {Element} r - Root element to search from (defaults to document)
+ * @returns {Array<Element>} Array of matching elements
+ */
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+/**
+ * Fisher-Yates shuffle algorithm to randomize array order
+ * @param {Array} a - Array to shuffle
+ * @returns {Array} Shuffled copy of the array
+ */
 const shuffle = a => a.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
+
+/**
+ * Display a temporary toast notification message at the bottom of the screen
+ * @param {string} m - Message to display
+ * @param {number} ms - Duration in milliseconds (default 1400ms)
+ */
 const toast = (m, ms=1400) => {
   const t = $('#toast');
   t.textContent = m;
@@ -11,24 +38,39 @@ const toast = (m, ms=1400) => {
   clearTimeout(t._h);
   t._h = setTimeout(() => t.style.display = 'none', ms);
 };
+
+// LocalStorage key prefix for saved game state
 const STORAGE_PREFIX = 'connections.v2.';
+
+// Current puzzle index in the allPuzzles array
 let currentIndex = 0;
+
+// Array of all available puzzles
 let allPuzzles = [];
+
+// Game state for the current puzzle
 const state = {
-  data: null,
-  id: null,
-  order: [],
-  selection: new Set(),
-  found: [],
-  mistakes: 0,
-  mistakesLog: [],
-  guesses: [],
-  locked: false,
-  failed: false
+  data: null,           // Normalized puzzle data
+  id: null,             // Puzzle ID (e.g., 'p1', 'p2')
+  order: [],            // Shuffled order of word indices
+  selection: new Set(), // Currently selected word indices
+  found: [],            // Array of solved groups
+  mistakes: 0,          // Number of incorrect guesses
+  mistakesLog: [],      // History of incorrect guesses
+  guesses: [],          // All guesses made (for results display)
+  locked: false,        // True when puzzle is complete (solved or failed)
+  failed: false         // True when player used all 4 mistakes
 };
+
+// Maximum number of mistakes allowed before game over
 const MAX_MISTAKES = 4;
 
 /* ---------- Screens ---------- */
+
+/**
+ * Show the home screen with puzzle selector grid
+ * Hides game and results screens, disables nav buttons, updates logo
+ */
 function showHome() {
   $('#homeScreen').hidden = false;
   $('#gameScreen').hidden = true;
@@ -40,6 +82,10 @@ function showHome() {
   renderHome();
 }
 
+/**
+ * Show the game screen with the puzzle board
+ * Hides home and results screens, enables nav buttons, shows action bar, updates logo with puzzle number
+ */
 function showGame() {
   $('#homeScreen').hidden = true;
   $('#gameScreen').hidden = false;
@@ -52,6 +98,10 @@ function showGame() {
   updateCongratsDisplay();
 }
 
+/**
+ * Show the results screen with colored emoji grid of guesses
+ * Hides home and game screens, hides action bar
+ */
 function showResults() {
   $('#homeScreen').hidden = true;
   $('#gameScreen').hidden = true;
@@ -60,6 +110,10 @@ function showResults() {
   renderResults();
 }
 
+/**
+ * Update congratulations/failure message visibility based on game state
+ * Shows success banner if solved, failure banner if failed, and results button if game is over
+ */
 function updateCongratsDisplay() {
   const solved = state.locked && !state.failed;
   $('#congrats').hidden = !solved;
@@ -68,6 +122,12 @@ function updateCongratsDisplay() {
 }
 
 /* ---------- Home grid ---------- */
+
+/**
+ * Get the completion status of a puzzle from localStorage
+ * @param {Object} p - Puzzle object with id property
+ * @returns {string} 'solved', 'failed', or 'unsolved'
+ */
 function getPuzzleStatus(p) {
   try {
     const raw = localStorage.getItem(STORAGE_PREFIX + (p.id || ''));
@@ -81,10 +141,19 @@ function getPuzzleStatus(p) {
   return 'unsolved';
 }
 
+/**
+ * Convert puzzle status string to emoji symbol
+ * @param {string} status - 'solved', 'failed', or 'unsolved'
+ * @returns {string} Emoji representing the status (✅, ✖️, or ⬜)
+ */
 function statusSymbol(status) {
   return status === 'solved' ? '✅' : (status === 'failed' ? '✖️' : '⬜');
 }
 
+/**
+ * Render the home screen puzzle grid
+ * Creates clickable tiles for each puzzle showing status and number
+ */
 function renderHome() {
   const grid = $('#homeGrid');
   grid.innerHTML = '';
@@ -104,10 +173,20 @@ function renderHome() {
 }
 
 /* ---------- Game ---------- */
+
+/**
+ * Get flat array of all words in the current puzzle
+ * @returns {Array<string>} All words from all groups
+ */
 function pool() {
   return state.data.groups.flatMap(g => g.words);
 }
 
+/**
+ * Build and render the game board
+ * Shows solved groups at top, then either remaining cards (if playing) or all unsolved groups (if locked)
+ * Manages card selection state and shuffle order
+ */
 function buildBoard() {
   const b = $('#board');
   b.innerHTML = '';
@@ -170,6 +249,10 @@ function buildBoard() {
   reflectLockedUI();
 }
 
+/**
+ * Update UI button states based on whether puzzle is locked
+ * Disables submit/deselect/shuffle buttons when puzzle is complete
+ */
 function reflectLockedUI() {
   const disabled = state.locked;
   $('#submitBtn').disabled = disabled;
@@ -178,6 +261,11 @@ function reflectLockedUI() {
   $('#resetBtn').disabled = false;
 }
 
+/**
+ * Toggle selection state of a word card
+ * @param {number} i - Word index in the pool
+ * @param {Element} d - DOM element for the card
+ */
 function toggle(i, d) {
   if (state.locked) {
     toast('Puzzle is finished.');
@@ -196,6 +284,11 @@ function toggle(i, d) {
   }
 }
 
+/**
+ * Submit the current selection of 4 words as a guess
+ * Checks for correct match, tracks guess for results, handles win/loss conditions
+ * Shows "one away" message if 3 out of 4 words are correct
+ */
 function submit() {
   if (state.locked) {
     toast('Puzzle is finished.');
@@ -268,6 +361,10 @@ function submit() {
   }
 }
 
+/**
+ * Reveal all remaining groups and lock the puzzle (used when max mistakes reached)
+ * Adds all unsolved groups to the found array and rebuilds the board
+ */
 function revealAllAndLock() {
   const foundWords = new Set(state.found.flatMap(g => g.words));
   state.data.groups.forEach(g => {
@@ -284,6 +381,10 @@ function revealAllAndLock() {
   buildBoard();
 }
 
+/**
+ * Clear all selected cards
+ * Updates both state and UI to remove all selections
+ */
 function deselectAll() {
   if (state.locked) {
     toast('Puzzle is finished.');
@@ -293,6 +394,10 @@ function deselectAll() {
   $$('.card').forEach(c => c.classList.remove('selected'));
 }
 
+/**
+ * Shuffle the order of cards on the board
+ * Re-randomizes the display order of remaining unsolved words
+ */
 function shuffleBoard() {
   if (state.locked) {
     toast('Puzzle is finished.');
@@ -302,6 +407,10 @@ function shuffleBoard() {
   buildBoard();
 }
 
+/**
+ * Save current game state to localStorage without user feedback
+ * Serializes all state properties including progress, guesses, and mistakes
+ */
 function saveSilently() {
   if (!state.id) return;
   const payload = {
@@ -319,6 +428,10 @@ function saveSilently() {
   localStorage.setItem(STORAGE_PREFIX + state.id, JSON.stringify(payload));
 }
 
+/**
+ * Restore saved game state from localStorage if it exists
+ * Handles backward compatibility for old saves missing colorName or failed properties
+ */
 function restoreIfAny() {
   if (!state.id) return;
   try {
@@ -347,6 +460,12 @@ function restoreIfAny() {
   } catch(e) {}
 }
 
+/**
+ * Normalize puzzle data for consistent internal format
+ * Uppercases all words, converts color names to hex values, preserves colorName for emoji mapping
+ * @param {Object} p - Puzzle object with groups array
+ * @returns {Object} Normalized puzzle object
+ */
 function normalizePuzzle(p) {
   p.groups.forEach(g => {
     g.words = g.words.map(w => String(w).toUpperCase());
@@ -357,6 +476,11 @@ function normalizePuzzle(p) {
   return p;
 }
 
+/**
+ * Load a puzzle and initialize game state
+ * Normalizes puzzle data, resets state, attempts to restore progress from localStorage
+ * @param {Object} json - Puzzle data with id and groups
+ */
 function loadPuzzle(json) {
   state.data = normalizePuzzle(json);
   state.id = json.id || Math.random().toString(36).slice(2);
@@ -372,6 +496,10 @@ function loadPuzzle(json) {
   buildBoard();
 }
 
+/**
+ * Reset the current puzzle to starting state
+ * Clears localStorage, resets all state, rebuilds board
+ */
 function resetPuzzle() {
   if (!state.data) return;
   localStorage.removeItem(STORAGE_PREFIX + state.id);
@@ -389,6 +517,11 @@ function resetPuzzle() {
 }
 
 /* ---------- Results ---------- */
+
+/**
+ * Render the results screen with colored emoji grid representing all guesses
+ * Groups emoji by color and sorts by frequency for cleaner visualization
+ */
 function renderResults() {
   const grid = $('#resultsGrid');
   grid.innerHTML = '';
@@ -414,6 +547,10 @@ function renderResults() {
   });
 }
 
+/**
+ * Copy results to clipboard as formatted text
+ * Generates shareable text with puzzle number, status, mistakes, and emoji grid
+ */
 function copyResults() {
   const puzzleNum = currentIndex + 1;
   let text = `Laura's Connections #${puzzleNum}\n`;
@@ -442,6 +579,11 @@ function copyResults() {
     .catch(() => toast('Failed to copy'));
 }
 
+/**
+ * Escape HTML special characters to prevent XSS
+ * @param {string} s - String to escape
+ * @returns {string} HTML-safe string
+ */
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({
     "&": "&amp;",
@@ -504,7 +646,11 @@ const SAMPLES = [
   ]}
 ];
 
-// Test suite - only used by test.html
+/**
+ * Export functions and constants for testing
+ * Used by test.html to access internal functions without polluting global scope
+ * @returns {Object} Object containing all testable functions and constants
+ */
 window.getTestExports = function() {
   return {
     COLOR_MAP,
@@ -520,7 +666,11 @@ window.getTestExports = function() {
   };
 };
 
-// Initialize only if DOM elements exist (not in test environment)
+/**
+ * Initialize the game when DOM is ready
+ * Sets up event handlers, loads first puzzle, and configures keyboard shortcuts
+ * Only runs when game DOM elements are present (not in test environment)
+ */
 function initializeGame() {
   allPuzzles = SAMPLES;
 
