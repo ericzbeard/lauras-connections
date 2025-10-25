@@ -63,6 +63,14 @@
   .failure[hidden]{display:none}
   .failure-text{font-size:clamp(24px,6vw,32px);font-weight:900;color:#fff;margin-bottom:4px}
   .failure-subtext{font-size:clamp(14px,3.5vw,18px);color:rgba(255,255,255,0.9)}
+
+  /* INTRO SCREEN */
+  .intro{display:grid;gap:12px;max-width:600px;margin:0 auto;padding-top:20px}
+  .intro[hidden]{display:none}
+  .christmas-tree{display:flex;flex-direction:column;gap:4px;align-items:center;background:var(--panel);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+  .tree-row{display:flex;gap:4px;font-size:28px;line-height:1;justify-content:center}
+  .logo{cursor:pointer;user-select:none}
+  .logo:hover{opacity:0.8}
 </style>
 </head>
 <body>
@@ -76,6 +84,16 @@
   </div>
 </header>
 <main>
+  <!-- INTRO SCREEN -->
+  <section id="introScreen" class="intro" aria-label="Welcome screen">
+    <h1 style="text-align:center;margin-bottom:16px">Merry Christmas, Laura!</h1>
+    <p style="text-align:center;color:var(--muted);margin-bottom:24px;font-size:18px">I hope you enjoy these puzzles!</p>
+    <div id="christmasTree" class="christmas-tree"></div>
+    <div style="text-align:center;margin-top:24px">
+      <button id="startBtn" style="min-height:48px;font-size:18px;padding:14px 28px">🎄 Start Puzzles</button>
+    </div>
+  </section>
+
   <!-- SELECTOR (separate screen) -->
   <section id="homeScreen" class="home" aria-label="Puzzle selector" hidden>
     <h1>Select a puzzle</h1>

@@ -68,10 +68,27 @@ const MAX_MISTAKES = 4;
 /* ---------- Screens ---------- */
 
 /**
+ * Show the intro/welcome screen with Christmas tree
+ * Hides all other screens, shows welcome message and tree
+ */
+function showIntro() {
+  $('#introScreen').hidden = false;
+  $('#homeScreen').hidden = true;
+  $('#gameScreen').hidden = true;
+  $('#resultsScreen').hidden = true;
+  $('#homeBtn').disabled = true;
+  $('#resetBtn').disabled = true;
+  $('#actionbar').style.display = 'none';
+  $('#logo').textContent = '🔗 Laura\'s Connections';
+  renderChristmasTree();
+}
+
+/**
  * Show the home screen with puzzle selector grid
  * Hides game and results screens, disables nav buttons, updates logo
  */
 function showHome() {
+  $('#introScreen').hidden = true;
   $('#homeScreen').hidden = false;
   $('#gameScreen').hidden = true;
   $('#resultsScreen').hidden = true;
@@ -87,6 +104,7 @@ function showHome() {
  * Hides home and results screens, enables nav buttons, shows action bar, updates logo with puzzle number
  */
 function showGame() {
+  $('#introScreen').hidden = true;
   $('#homeScreen').hidden = true;
   $('#gameScreen').hidden = false;
   $('#resultsScreen').hidden = true;
@@ -103,6 +121,7 @@ function showGame() {
  * Hides home and game screens, hides action bar
  */
 function showResults() {
+  $('#introScreen').hidden = true;
   $('#homeScreen').hidden = true;
   $('#gameScreen').hidden = true;
   $('#resultsScreen').hidden = false;
@@ -169,6 +188,33 @@ function renderHome() {
       showGame();
     };
     grid.appendChild(tile);
+  });
+}
+
+/**
+ * Render a Christmas tree using colored emoji blocks
+ * Creates a symmetric tree with green blocks and a yellow star on top
+ */
+function renderChristmasTree() {
+  const tree = $('#christmasTree');
+  tree.innerHTML = '';
+
+  // Christmas tree pattern: star on top, then progressively wider rows
+  const treePattern = [
+    ['🟨'],                           // Star
+    ['🟩'],                           // Top of tree
+    ['🟩', '🟩', '🟩'],               // Row 2
+    ['🟩', '🟩', '🟩', '🟩', '🟩'],   // Row 3
+    ['🟩', '🟩', '🟩', '🟩', '🟩', '🟩', '🟩'], // Row 4
+    ['🟩', '🟩', '🟩', '🟩', '🟩', '🟩', '🟩', '🟩', '🟩'], // Bottom
+    ['🟫']                            // Trunk
+  ];
+
+  treePattern.forEach(row => {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'tree-row';
+    rowDiv.textContent = row.join('');
+    tree.appendChild(rowDiv);
   });
 }
 
@@ -686,15 +732,11 @@ function initializeGame() {
   $('#resultsBtn2').onclick = showResults;
   $('#copyResultsBtn').onclick = copyResults;
   $('#backToGameBtn').onclick = showGame;
+  $('#startBtn').onclick = showHome;
+  $('#logo').onclick = showIntro;
 
-  // Load first puzzle by default
-  if (allPuzzles.length > 0) {
-    currentIndex = 0;
-    loadPuzzle(allPuzzles[0]);
-    showGame();
-  } else {
-    showHome();
-  }
+  // Show intro screen on first load
+  showIntro();
 
   // Keyboard shortcuts
   document.addEventListener('keydown', e => {
