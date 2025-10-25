@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(open index.html)"
+      "Bash(open index.html)",
+      "Bash(open test.html)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connections Tests</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --panel: #121923;
+    --text: #e8eef6;
+    --muted: #97a6ba;
+    --good: #4caf50;
+    --bad: #ef5350;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+    margin: 0;
+  }
+  h1 { margin: 0 0 20px 0; }
+  .container { max-width: 900px; margin: 0 auto; }
+  .summary {
+    background: var(--panel);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .summary-label {
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .summary-value {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .summary-value.pass { color: var(--good); }
+  .summary-value.fail { color: var(--bad); }
+  .test-suite {
+    background: var(--panel);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  .test-suite h2 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+  }
+  .test-case {
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border-left: 4px solid transparent;
+  }
+  .test-case.pass {
+    background: rgba(76, 175, 80, 0.1);
+    border-left-color: var(--good);
+  }
+  .test-case.fail {
+    background: rgba(239, 83, 80, 0.1);
+    border-left-color: var(--bad);
+  }
+  .test-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .test-name::before {
+    content: '✓ ';
+    color: var(--good);
+  }
+  .test-case.fail .test-name::before {
+    content: '✗ ';
+    color: var(--bad);
+  }
+  .test-error {
+    color: var(--bad);
+    font-family: monospace;
+    font-size: 13px;
+    margin-top: 5px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
+  .test-time {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  button {
+    background: #4da3ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  button:hover {
+    background: #3d93ef;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🧪 Connections Test Suite</h1>
+  <div class="summary" id="summary"></div>
+  <button onclick="runTests()">▶ Run Tests</button>
+  <div id="results" style="margin-top: 20px;"></div>
+</div>
+
+<script src="game.js"></script>
+<script>
+// Get test exports from game.js
+const T = window.getTestExports();
+
+// Simple test harness
+class TestHarness {
+  constructor() {
+    this.suites = [];
+    this.totalTests = 0;
+    this.passedTests = 0;
+    this.failedTests = 0;
+    this.startTime = 0;
+  }
+
+  suite(name, fn) {
+    const suite = {
+      name,
+      tests: [],
+      beforeEach: null,
+      afterEach: null
+    };
+    this.suites.push(suite);
+
+    const context = {
+      beforeEach: (fn) => { suite.beforeEach = fn; },
+      afterEach: (fn) => { suite.afterEach = fn; },
+      test: (testName, testFn) => {
+        suite.tests.push({ name: testName, fn: testFn });
+      }
+    };
+
+    fn(context);
+  }
+
+  async run() {
+    this.totalTests = 0;
+    this.passedTests = 0;
+    this.failedTests = 0;
+    this.startTime = performance.now();
+
+    const results = [];
+
+    for (const suite of this.suites) {
+      const suiteResult = {
+        name: suite.name,
+        tests: []
+      };
+
+      for (const test of suite.tests) {
+        this.totalTests++;
+        const testStart = performance.now();
+        let result = {
+          name: test.name,
+          passed: false,
+          error: null,
+          time: 0
+        };
+
+        try {
+          if (suite.beforeEach) suite.beforeEach();
+          await test.fn();
+          if (suite.afterEach) suite.afterEach();
+
+          result.passed = true;
+          this.passedTests++;
+        } catch (error) {
+          result.error = error.message;
+          this.failedTests++;
+        }
+
+        result.time = performance.now() - testStart;
+        suiteResult.tests.push(result);
+      }
+
+      results.push(suiteResult);
+    }
+
+    const totalTime = performance.now() - this.startTime;
+    return { results, totalTime };
+  }
+
+  renderResults(data) {
+    const summaryEl = document.getElementById('summary');
+    summaryEl.innerHTML = `
+      <div class="summary-item">
+        <div class="summary-label">Total Tests</div>
+        <div class="summary-value">${this.totalTests}</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Passed</div>
+        <div class="summary-value pass">${this.passedTests}</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Failed</div>
+        <div class="summary-value fail">${this.failedTests}</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Time</div>
+        <div class="summary-value">${data.totalTime.toFixed(2)}ms</div>
+      </div>
+    `;
+
+    const resultsEl = document.getElementById('results');
+    resultsEl.innerHTML = data.results.map(suite => `
+      <div class="test-suite">
+        <h2>${suite.name}</h2>
+        ${suite.tests.map(test => `
+          <div class="test-case ${test.passed ? 'pass' : 'fail'}">
+            <div class="test-name">${test.name}</div>
+            ${test.error ? `<div class="test-error">${test.error}</div>` : ''}
+            <div class="test-time">${test.time.toFixed(2)}ms</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+  }
+}
+
+// Assertion helpers
+function assertEquals(actual, expected, message) {
+  if (actual !== expected) {
+    throw new Error(message || `Expected ${expected}, but got ${actual}`);
+  }
+}
+
+function assertDeepEquals(actual, expected, message) {
+  const actualStr = JSON.stringify(actual);
+  const expectedStr = JSON.stringify(expected);
+  if (actualStr !== expectedStr) {
+    throw new Error(message || `Expected ${expectedStr}, but got ${actualStr}`);
+  }
+}
+
+function assertTrue(value, message) {
+  if (!value) {
+    throw new Error(message || `Expected true, but got ${value}`);
+  }
+}
+
+function assertFalse(value, message) {
+  if (value) {
+    throw new Error(message || `Expected false, but got ${value}`);
+  }
+}
+
+function assertThrows(fn, message) {
+  try {
+    fn();
+    throw new Error(message || 'Expected function to throw an error');
+  } catch (e) {
+    if (e.message === message || e.message === 'Expected function to throw an error') {
+      throw e;
+    }
+  }
+}
+
+function assertArrayContains(array, value, message) {
+  if (!array.includes(value)) {
+    throw new Error(message || `Expected array to contain ${value}`);
+  }
+}
+
+function assertArrayLength(array, length, message) {
+  if (array.length !== length) {
+    throw new Error(message || `Expected array length ${length}, but got ${array.length}`);
+  }
+}
+
+// Create test harness instance
+const harness = new TestHarness();
+
+// Run tests
+async function runTests() {
+  const data = await harness.run();
+  harness.renderResults(data);
+}
+
+// ========================================
+// TEST SUITES
+// ========================================
+
+harness.suite('Utility Functions', ({ test }) => {
+  test('shuffle should randomize array', () => {
+    const arr = [1, 2, 3, 4, 5];
+    const shuffled = T.shuffle([...arr]);
+    assertArrayLength(shuffled, arr.length, 'Shuffled array should have same length');
+    // Check all elements are present
+    arr.forEach(item => {
+      assertArrayContains(shuffled, item, `Shuffled array should contain ${item}`);
+    });
+  });
+
+  test('escapeHtml should escape HTML entities', () => {
+    assertEquals(T.escapeHtml('<div>'), '&lt;div&gt;');
+    assertEquals(T.escapeHtml('Tom & Jerry'), 'Tom &amp; Jerry');
+    assertEquals(T.escapeHtml('"quotes"'), '&quot;quotes&quot;');
+    assertEquals(T.escapeHtml("'apostrophe'"), '&#39;apostrophe&#39;');
+  });
+});
+
+harness.suite('Color Functions', ({ test }) => {
+  test('COLOR_MAP should map color names to hex values', () => {
+    assertEquals(T.COLOR_MAP.purple, '#9c27b0');
+    assertEquals(T.COLOR_MAP.blue, '#4da3ff');
+    assertEquals(T.COLOR_MAP.green, '#4caf50');
+    assertEquals(T.COLOR_MAP.yellow, '#ffca28');
+  });
+
+  test('COLOR_REVERSE should map hex values to color names', () => {
+    assertEquals(T.COLOR_REVERSE['#9c27b0'], 'purple');
+    assertEquals(T.COLOR_REVERSE['#4da3ff'], 'blue');
+    assertEquals(T.COLOR_REVERSE['#4caf50'], 'green');
+    assertEquals(T.COLOR_REVERSE['#ffca28'], 'yellow');
+  });
+
+  test('COLOR_EMOJI should map color names to emoji', () => {
+    assertEquals(T.COLOR_EMOJI.purple, '🟪');
+    assertEquals(T.COLOR_EMOJI.blue, '🟦');
+    assertEquals(T.COLOR_EMOJI.green, '🟩');
+    assertEquals(T.COLOR_EMOJI.yellow, '🟨');
+  });
+});
+
+harness.suite('Puzzle Normalization', ({ test }) => {
+  test('normalizePuzzle should uppercase words', () => {
+    const puzzle = {
+      groups: [{
+        category: 'TEST',
+        color: 'blue',
+        words: ['apple', 'banana', 'cherry']
+      }]
+    };
+    const normalized = T.normalizePuzzle(puzzle);
+    assertDeepEquals(normalized.groups[0].words, ['APPLE', 'BANANA', 'CHERRY']);
+  });
+
+  test('normalizePuzzle should set colorName', () => {
+    const puzzle = {
+      groups: [{
+        category: 'TEST',
+        color: 'blue',
+        words: ['WORD']
+      }]
+    };
+    const normalized = T.normalizePuzzle(puzzle);
+    assertEquals(normalized.groups[0].colorName, 'blue');
+    assertEquals(normalized.groups[0].color, '#4da3ff');
+  });
+
+  test('normalizePuzzle should handle hex colors', () => {
+    const puzzle = {
+      groups: [{
+        category: 'TEST',
+        color: '#4da3ff',
+        words: ['WORD']
+      }]
+    };
+    const normalized = T.normalizePuzzle(puzzle);
+    assertEquals(normalized.groups[0].colorName, 'blue');
+    assertEquals(normalized.groups[0].color, '#4da3ff');
+  });
+});
+
+harness.suite('Status Symbol Function', ({ test }) => {
+  test('statusSymbol should return correct emoji for solved', () => {
+    assertEquals(T.statusSymbol('solved'), '✅');
+  });
+
+  test('statusSymbol should return correct emoji for failed', () => {
+    assertEquals(T.statusSymbol('failed'), '✖️');
+  });
+
+  test('statusSymbol should return correct emoji for unsolved', () => {
+    assertEquals(T.statusSymbol('unsolved'), '⬜');
+  });
+});
+
+harness.suite('State Management', ({ test, beforeEach }) => {
+  beforeEach(() => {
+    // Reset state before each test
+    T.state.data = null;
+    T.state.id = null;
+    T.state.order = [];
+    T.state.selection.clear();
+    T.state.found = [];
+    T.state.mistakes = 0;
+    T.state.mistakesLog = [];
+    T.state.guesses = [];
+    T.state.locked = false;
+    T.state.failed = false;
+  });
+
+  test('state should initialize with correct defaults', () => {
+    assertEquals(T.state.mistakes, 0);
+    assertEquals(T.state.locked, false);
+    assertEquals(T.state.failed, false);
+    assertArrayLength(T.state.found, 0);
+    assertArrayLength(T.state.mistakesLog, 0);
+  });
+
+  test('MAX_MISTAKES should be 4', () => {
+    assertEquals(T.MAX_MISTAKES, 4);
+  });
+});
+
+harness.suite('Sample Puzzles', ({ test }) => {
+  test('SAMPLES should be defined and be an array', () => {
+    assertTrue(typeof T.SAMPLES !== 'undefined', 'SAMPLES should be defined');
+    assertTrue(Array.isArray(T.SAMPLES), 'SAMPLES should be an array');
+  });
+
+  test('SAMPLES should contain 8 puzzles', () => {
+    assertArrayLength(T.SAMPLES, 8);
+  });
+
+  test('Each puzzle should have 4 groups', () => {
+    T.SAMPLES.forEach((puzzle, i) => {
+      assertTrue(puzzle.groups !== undefined, `Puzzle ${i + 1} should have groups property`);
+      assertArrayLength(puzzle.groups, 4, `Puzzle ${i + 1} should have 4 groups`);
+    });
+  });
+
+  test('Each group should have 4 words', () => {
+    T.SAMPLES.forEach((puzzle, i) => {
+      puzzle.groups.forEach((group, j) => {
+        assertTrue(group.words !== undefined, `Puzzle ${i + 1}, Group ${j + 1} should have words property`);
+        assertArrayLength(group.words, 4, `Puzzle ${i + 1}, Group ${j + 1} should have 4 words`);
+      });
+    });
+  });
+
+  test('Each puzzle should have a unique id', () => {
+    const ids = T.SAMPLES.map(p => p.id);
+    const uniqueIds = new Set(ids);
+    assertEquals(uniqueIds.size, T.SAMPLES.length, 'All puzzle IDs should be unique');
+  });
+});
+
+// Auto-run tests on load
+window.addEventListener('load', () => {
+  console.log('=== Pre-test diagnostics ===');
+  console.log('SAMPLES defined:', typeof T.SAMPLES !== 'undefined');
+  console.log('SAMPLES is array:', Array.isArray(T.SAMPLES));
+  console.log('SAMPLES.length:', T.SAMPLES.length);
+  console.log('First puzzle:', T.SAMPLES[0]);
+  console.log('=== Running tests ===');
+  runTests();
+});
+</script>
+</body>
+</html>
