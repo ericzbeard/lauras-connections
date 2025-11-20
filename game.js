@@ -643,52 +643,58 @@ function escapeHtml(s) {
 // Embedded puzzles
 const SAMPLES = [
   {id:'p1', groups:[
-    {category:'PRIMARY COLORS', color:'green', words:['RED','BLUE','YELLOW','GREEN']},
-    {category:'BIRDS', color:'yellow', words:['ROBIN','WREN','HERON','SWAN']},
-    {category:'TOOLS', color:'purple', words:['SAW','DRILL','PLANE','LEVEL']},
-    {category:'PLANETS', color:'blue', words:['MARS','VENUS','EARTH','SATURN']}
+    {category:'HOMOPHONES OF NUMBERS', color:'yellow', words:['WON','TOO','FOR','ATE']},
+    {category:'WORDS ENDING IN -OUGH', color:'green', words:['THROUGH','THOUGH','ROUGH','COUGH']},
+    {category:'SAME /U:/ VOWEL SOUND', color:'blue', words:['BLUE','TRUE','CREW','SHOE']},
+    {category:'WORDS WITH SILENT LETTERS', color:'purple', words:['KNIGHT','WRITE','THUMB','LAMB']}
   ]},
   {id:'p2', groups:[
-    {category:'ENDS WITH -ING', color:'yellow', words:['RING','SLING','THING','SPRING']},
-    {category:'ANIMALS', color:'green', words:['MOUSE','OTTER','PANDA','HORSE']},
-    {category:'KINDS OF BREAD', color:'blue', words:['RYE','PITA','NAAN','BAGUETTE']},
-    {category:'TOOLS', color:'purple', words:['FILE','LEVEL','DRILL','SAW']}
+    {category:'PERCEPTUAL FREQUENCY SCALES', color:'purple', words:['MEL','BARK','ERB','SEMITONE']},
+    {category:'PROSODIC FEATURES', color:'blue', words:['PITCH','STRESS','TONE','DURATION']},
+    {category:'SPECTRAL COMPONENTS', color:'green', words:['FORMANT','HARMONIC','CEPSTRUM','SPECTRUM']},
+    {category:'MEASUREMENT UNITS', color:'yellow', words:['HERTZ','DECIBEL','FRAME','SAMPLE']}
   ]},
   {id:'p3', groups:[
-    {category:'SEA/SEE SET', color:'blue', words:['SEA','SEE','SEW','SO']},
-    {category:'FLOWER/FLOUR SET', color:'yellow', words:['FLOUR','FLOWER','KNIGHT','NIGHT']},
-    {category:'PAIRS', color:'green', words:['PARE','PEAR','PAIR','PAREE']},
-    {category:'DIRECTIONS', color:'purple', words:['EAST','WEST','NORTH','SOUTH']}
+    {category:'DISTINCTIVE PHONOLOGICAL FEATURES', color:'purple', words:['SONORANT','CONTINUANT','STRIDENT','SIBILANT']},
+    {category:'PLACES OF ARTICULATION', color:'blue', words:['LABIAL','DENTAL','VELAR','GLOTTAL']},
+    {category:'PHONATION TYPES', color:'green', words:['CREAKY','BREATHY','MODAL','FALSETTO']},
+    {category:'SYNTACTIC CONSTITUENTS', color:'yellow', words:['CLAUSE','PHRASE','MORPHEME','LEXEME']}
   ]},
   {id:'p4', groups:[
-    {category:'FRUIT VARIETIES', color:'green', words:['GALA','NAVEL','BARTLETT','CAVENDISH']},
-    {category:'WORDS BEFORE "HOUSE"', color:'blue', words:['TREE','GREEN','DOLL','GLASS']},
-    {category:'CITIES ON RIVERS', color:'yellow', words:['PARIS','LONDON','CAIRO','BUDAPEST']},
-    {category:'FIVE-LETTER ANIMALS', color:'purple', words:['OTTER','MOOSE','PANDA','KOALA']}
+    {category:'TOKENIZATION ALGORITHMS', color:'purple', words:['BPE','WORDPIECE','SENTENCEPIECE','UNIGRAM']},
+    {category:'DECODING STRATEGIES', color:'blue', words:['GREEDY','BEAM','SAMPLING','NUCLEUS']},
+    {category:'ACOUSTIC FEATURES', color:'green', words:['MFCC','FBANK','SPECTROGRAM','WAVEFORM']},
+    {category:'NEURAL ARCHITECTURES', color:'yellow', words:['TRANSFORMER','CONFORMER','LSTM','GRU']}
   ]},
   {id:'p5', groups:[
-    {category:'HOMOPHONES', color:'yellow', words:['EIGHT','ATE','KNIGHT','NIGHT']},
-    {category:'PIECES OF A SUIT', color:'blue', words:['JACKET','PANTS','VEST','SHIRT']},
-    {category:'COMPUTER INPUTS', color:'purple', words:['MOUSE','TOUCH','VOICE','KEYBOARD']},
-    {category:'PASTA SHAPES', color:'green', words:['FARFALLE','PENNE','RIGATONI','ORECCHIETTE']}
+    {category:'LOSS FUNCTIONS IN ASR/TTS', color:'purple', words:['CTC','TRANSDUCER','ATTENTION','FOCAL']},
+    {category:'DATA AUGMENTATION METHODS', color:'blue', words:['SPECAUGMENT','MIXUP','SPEED','VOLUME']},
+    {category:'SPEECH CORPORA', color:'green', words:['LIBRISPEECH','COMMONVOICE','VCTK','LJSPEECH']},
+    {category:'EVALUATION METRICS', color:'yellow', words:['WER','MOS','BLEU','PESQ']}
   ]},
   {id:'p6', groups:[
-    {category:'NBA TEAMS', color:'blue', words:['BULLS','HEAT','SUNS','JAZZ']},
-    {category:'FISH', color:'green', words:['SALMON','TROUT','COD','HAKE']},
-    {category:'WORDS AFTER "BLACK"', color:'yellow', words:['JACK','MAIL','ICE','OUT']},
-    {category:'MUSICAL TEMPOS', color:'purple', words:['ALLEGRO','LARGO','ANDANTE','PRESTO']}
+    {category:'PHONOLOGICAL PROCESSES', color:'purple', words:['ASSIMILATION','DISSIMILATION','EPENTHESIS','METATHESIS']},
+    {category:'LINGUISTIC TYPOLOGY', color:'blue', words:['AGGLUTINATIVE','FUSIONAL','ISOLATING','POLYSYNTHETIC']},
+    {category:'WRITING SYSTEMS', color:'green', words:['ABJAD','ABUGIDA','SYLLABARY','LOGOGRAPHIC']},
+    {category:'SPEECH ERRORS', color:'yellow', words:['SPOONERISM','MALAPROPISM','EGGCORN','MONDEGREEN']}
   ]},
   {id:'p7', groups:[
-    {category:'US PRESIDENTS (LAST NAMES)', color:'purple', words:['ADAMS','HARRISON','JOHNSON','ROOSEVELT']},
-    {category:'GEMSTONES', color:'blue', words:['OPAL','RUBY','SAPPHIRE','EMERALD']},
-    {category:'TREE PARTS', color:'green', words:['ROOT','TRUNK','BRANCH','CROWN']},
-    {category:'BOARD GAMES', color:'yellow', words:['CLUE','RISK','MONOPOLY','LIFE']}
+    {category:'NEURAL VOCODERS', color:'purple', words:['HIFIGAN','MELGAN','WAVEGLOW','PARALLEL-WAVEGAN']},
+    {category:'END-TO-END TTS MODELS', color:'blue', words:['TACOTRON','FASTSPEECH','VITS','GLOWTTS']},
+    {category:'SELF-SUPERVISED SPEECH MODELS', color:'green', words:['WAV2VEC','HUBERT','WAVLM','W2V-BERT']},
+    {category:'SPEECH SYNTHESIS FEATURES', color:'yellow', words:['PROSODY','SPEAKER','STYLE','EMOTION']}
   ]},
   {id:'p8', groups:[
-    {category:'SEAS', color:'blue', words:['ARAL','BALTIC','RED','MARMARA']},
-    {category:'WORDS STARTING WITH MICRO-', color:'yellow', words:['MICROSCOPE','MICROWAVE','MICROCHIP','MICROPHONE']},
-    {category:'BERRIES', color:'green', words:['ELDERBERRY','GOOSEBERRY','STRAWBERRY','BLUEBERRY']},
-    {category:'CLOTHING FASTENERS', color:'purple', words:['BUTTON','ZIPPER','VELCRO','SNAP']}
+    {category:'MEANS "GIFT" (EN/FR/DE/ES)', color:'purple', words:['GIFT','CADEAU','GESCHENK','REGALO']},
+    {category:'MEANS "NAME" (EN/FR/ES/IT)', color:'blue', words:['NAME','NOM','NOMBRE','NOME']},
+    {category:'MEANS "WORD" (FR/DE/ES/IT)', color:'green', words:['MOT','WORT','PALABRA','PAROLA']},
+    {category:'MEANS "LANGUAGE" (FR/DE/ES/IT)', color:'yellow', words:['LANGUE','SPRACHE','LENGUA','LINGUA']}
+  ]},
+  {id:'p9', groups:[
+    {category:'MEANS "POTATO" (FR/DE/RU/ES)', color:'purple', words:['POMME DE TERRE','KARTOFFEL','КАРТОФЕЛЬ','PATATA']},
+    {category:'MEANS "ORANGE" (FR/DE/RU/ES)', color:'blue', words:['ORANGE','APFELSINE','АПЕЛЬСИН','NARANJA']},
+    {category:'MEANS "PINEAPPLE" (FR/DE/RU/ES)', color:'green', words:['ANANAS','ANANAS','АНАНАС','PIÑA']},
+    {category:'MEANS "LEMON" (FR/DE/RU/ES)', color:'yellow', words:['CITRON','ZITRONE','ЛИМОН','LIMÓN']}
   ]}
 ];
 
