@@ -642,59 +642,65 @@ function escapeHtml(s) {
 
 // Embedded puzzles
 const SAMPLES = [
-  {id:'p1', groups:[
+  {id:'Puzzle 1', groups:[
+    {category:'FALSE FRIENDS (EN WORDS, FR MEANINGS)', color:'purple', words:['LOCATION','LECTURE','SENSIBLE','AGENDA']},
+    {category:'FRENCH LOANWORDS IN ENGLISH', color:'blue', words:['CAFÉ','MENU','CHEF','DEPOT']},
+    {category:'HOMOGRAPHS ACROSS LANGUAGES', color:'green', words:['CHAT','PAIN','COIN','GIFT']},
+    {category:'INTERNATIONAL WORDS', color:'yellow', words:['TAXI','HOTEL','RADIO','PIANO']}
+  ]},
+  {id:'Puzzle 2', groups:[
     {category:'HOMOPHONES OF NUMBERS', color:'yellow', words:['WON','TOO','FOR','ATE']},
     {category:'WORDS ENDING IN -OUGH', color:'green', words:['THROUGH','THOUGH','ROUGH','COUGH']},
     {category:'SAME /U:/ VOWEL SOUND', color:'blue', words:['BLUE','TRUE','CREW','SHOE']},
     {category:'WORDS WITH SILENT LETTERS', color:'purple', words:['KNIGHT','WRITE','THUMB','LAMB']}
   ]},
-  {id:'p2', groups:[
+  {id:'Puzzle 3', groups:[
     {category:'PERCEPTUAL FREQUENCY SCALES', color:'purple', words:['MEL','BARK','ERB','SEMITONE']},
     {category:'PROSODIC FEATURES', color:'blue', words:['PITCH','STRESS','TONE','DURATION']},
     {category:'SPECTRAL COMPONENTS', color:'green', words:['FORMANT','HARMONIC','CEPSTRUM','SPECTRUM']},
     {category:'MEASUREMENT UNITS', color:'yellow', words:['HERTZ','DECIBEL','FRAME','SAMPLE']}
   ]},
-  {id:'p3', groups:[
-    {category:'DISTINCTIVE PHONOLOGICAL FEATURES', color:'purple', words:['SONORANT','CONTINUANT','STRIDENT','SIBILANT']},
-    {category:'PLACES OF ARTICULATION', color:'blue', words:['LABIAL','DENTAL','VELAR','GLOTTAL']},
-    {category:'PHONATION TYPES', color:'green', words:['CREAKY','BREATHY','MODAL','FALSETTO']},
-    {category:'SYNTACTIC CONSTITUENTS', color:'yellow', words:['CLAUSE','PHRASE','MORPHEME','LEXEME']}
-  ]},
-  {id:'p4', groups:[
-    {category:'TOKENIZATION ALGORITHMS', color:'purple', words:['BPE','WORDPIECE','SENTENCEPIECE','UNIGRAM']},
-    {category:'DECODING STRATEGIES', color:'blue', words:['GREEDY','BEAM','SAMPLING','NUCLEUS']},
-    {category:'ACOUSTIC FEATURES', color:'green', words:['MFCC','FBANK','SPECTROGRAM','WAVEFORM']},
-    {category:'NEURAL ARCHITECTURES', color:'yellow', words:['TRANSFORMER','CONFORMER','LSTM','GRU']}
-  ]},
-  {id:'p5', groups:[
-    {category:'LOSS FUNCTIONS IN ASR/TTS', color:'purple', words:['CTC','TRANSDUCER','ATTENTION','FOCAL']},
-    {category:'DATA AUGMENTATION METHODS', color:'blue', words:['SPECAUGMENT','MIXUP','SPEED','VOLUME']},
-    {category:'SPEECH CORPORA', color:'green', words:['LIBRISPEECH','COMMONVOICE','VCTK','LJSPEECH']},
-    {category:'EVALUATION METRICS', color:'yellow', words:['WER','MOS','BLEU','PESQ']}
-  ]},
-  {id:'p6', groups:[
-    {category:'PHONOLOGICAL PROCESSES', color:'purple', words:['ASSIMILATION','DISSIMILATION','EPENTHESIS','METATHESIS']},
-    {category:'LINGUISTIC TYPOLOGY', color:'blue', words:['AGGLUTINATIVE','FUSIONAL','ISOLATING','POLYSYNTHETIC']},
-    {category:'WRITING SYSTEMS', color:'green', words:['ABJAD','ABUGIDA','SYLLABARY','LOGOGRAPHIC']},
-    {category:'SPEECH ERRORS', color:'yellow', words:['SPOONERISM','MALAPROPISM','EGGCORN','MONDEGREEN']}
-  ]},
-  {id:'p7', groups:[
-    {category:'NEURAL VOCODERS', color:'purple', words:['HIFIGAN','MELGAN','WAVEGLOW','PARALLEL-WAVEGAN']},
-    {category:'END-TO-END TTS MODELS', color:'blue', words:['TACOTRON','FASTSPEECH','VITS','GLOWTTS']},
-    {category:'SELF-SUPERVISED SPEECH MODELS', color:'green', words:['WAV2VEC','HUBERT','WAVLM','W2V-BERT']},
-    {category:'SPEECH SYNTHESIS FEATURES', color:'yellow', words:['PROSODY','SPEAKER','STYLE','EMOTION']}
-  ]},
-  {id:'p8', groups:[
+  {id:'Puzzle 4', groups:[
     {category:'MEANS "GIFT" (EN/FR/DE/ES)', color:'purple', words:['GIFT','CADEAU','GESCHENK','REGALO']},
     {category:'MEANS "NAME" (EN/FR/ES/IT)', color:'blue', words:['NAME','NOM','NOMBRE','NOME']},
     {category:'MEANS "WORD" (FR/DE/ES/IT)', color:'green', words:['MOT','WORT','PALABRA','PAROLA']},
     {category:'MEANS "LANGUAGE" (FR/DE/ES/IT)', color:'yellow', words:['LANGUE','SPRACHE','LENGUA','LINGUA']}
   ]},
-  {id:'p9', groups:[
+  {id:'Puzzle 5', groups:[
+    {category:'DISTINCTIVE PHONOLOGICAL FEATURES', color:'purple', words:['SONORANT','CONTINUANT','STRIDENT','SIBILANT']},
+    {category:'PLACES OF ARTICULATION', color:'blue', words:['LABIAL','DENTAL','VELAR','GLOTTAL']},
+    {category:'PHONATION TYPES', color:'green', words:['CREAKY','BREATHY','MODAL','FALSETTO']},
+    {category:'SYNTACTIC CONSTITUENTS', color:'yellow', words:['CLAUSE','PHRASE','MORPHEME','LEXEME']}
+  ]},
+  {id:'Puzzle 6', groups:[
+    {category:'TOKENIZATION ALGORITHMS', color:'purple', words:['BPE','WORDPIECE','SENTENCEPIECE','UNIGRAM']},
+    {category:'DECODING STRATEGIES', color:'blue', words:['GREEDY','BEAM','SAMPLING','NUCLEUS']},
+    {category:'ACOUSTIC FEATURES', color:'green', words:['MFCC','FBANK','SPECTROGRAM','WAVEFORM']},
+    {category:'NEURAL ARCHITECTURES', color:'yellow', words:['TRANSFORMER','CONFORMER','LSTM','GRU']}
+  ]},
+  {id:'Puzzle 7', groups:[
     {category:'MEANS "POTATO" (FR/DE/RU/ES)', color:'purple', words:['POMME DE TERRE','KARTOFFEL','КАРТОФЕЛЬ','PATATA']},
     {category:'MEANS "ORANGE" (FR/DE/RU/ES)', color:'blue', words:['ORANGE','APFELSINE','АПЕЛЬСИН','NARANJA']},
     {category:'MEANS "PINEAPPLE" (FR/DE/RU/ES)', color:'green', words:['ANANAS','ANANAS','АНАНАС','PIÑA']},
     {category:'MEANS "LEMON" (FR/DE/RU/ES)', color:'yellow', words:['CITRON','ZITRONE','ЛИМОН','LIMÓN']}
+  ]},
+  {id:'Puzzle 8', groups:[
+    {category:'PHONOLOGICAL PROCESSES', color:'purple', words:['ASSIMILATION','DISSIMILATION','EPENTHESIS','METATHESIS']},
+    {category:'LINGUISTIC TYPOLOGY', color:'blue', words:['AGGLUTINATIVE','FUSIONAL','ISOLATING','POLYSYNTHETIC']},
+    {category:'WRITING SYSTEMS', color:'green', words:['ABJAD','ABUGIDA','SYLLABARY','LOGOGRAPHIC']},
+    {category:'SPEECH ERRORS', color:'yellow', words:['SPOONERISM','MALAPROPISM','EGGCORN','MONDEGREEN']}
+  ]},
+  {id:'Puzzle 9', groups:[
+    {category:'LOSS FUNCTIONS IN ASR/TTS', color:'purple', words:['CTC','TRANSDUCER','ATTENTION','FOCAL']},
+    {category:'DATA AUGMENTATION METHODS', color:'blue', words:['SPECAUGMENT','MIXUP','SPEED','VOLUME']},
+    {category:'SPEECH CORPORA', color:'green', words:['LIBRISPEECH','COMMONVOICE','VCTK','LJSPEECH']},
+    {category:'EVALUATION METRICS', color:'yellow', words:['WER','MOS','BLEU','PESQ']}
+  ]},
+  {id:'Puzzle 10', groups:[
+    {category:'NEURAL VOCODERS', color:'purple', words:['HIFIGAN','MELGAN','WAVEGLOW','PARALLEL-WAVEGAN']},
+    {category:'END-TO-END TTS MODELS', color:'blue', words:['TACOTRON','FASTSPEECH','VITS','GLOWTTS']},
+    {category:'SELF-SUPERVISED SPEECH MODELS', color:'green', words:['WAV2VEC','HUBERT','WAVLM','W2V-BERT']},
+    {category:'SPEECH SYNTHESIS FEATURES', color:'yellow', words:['PROSODY','SPEAKER','STYLE','EMOTION']}
   ]}
 ];
 
