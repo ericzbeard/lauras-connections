@@ -2,6 +2,8 @@
 
 A custom Connections-style puzzle game created as a Christmas gift for Laura. This is a browser-based word puzzle game inspired by the New York Times Connections, featuring 8 hand-crafted puzzles.
 
+<a href="https://ericzbeard.github.io/lauras-connections/">https://ericzbeard.github.io/lauras-connections/</a>
+
 ## 🎁 About This Gift
 
 This is a personal Christmas present - a collection of word puzzle games where you find groups of four words that share a common connection. Each puzzle has four groups of four words, and the challenge is to identify all the groups with a maximum of 4 mistakes allowed.
