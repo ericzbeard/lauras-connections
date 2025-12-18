@@ -39,6 +39,27 @@ const toast = (m, ms=1400) => {
   t._h = setTimeout(() => t.style.display = 'none', ms);
 };
 
+/**
+ * Calculate dynamic font size based on text length
+ * Shorter text gets larger fonts, longer text gets smaller fonts
+ * @param {string} text - Text to size
+ * @returns {string} CSS font-size value (e.g., '16px', '12px')
+ */
+const calculateFontSize = (text) => {
+  const len = text.length;
+  if (len <= 6) return '18px';
+  if (len <= 8) return '17px';
+  if (len <= 10) return '16px';
+  if (len <= 12) return '15px';
+  if (len <= 14) return '14px';
+  if (len <= 16) return '13px';
+  if (len <= 18) return '12px';
+  if (len <= 21) return '11px';
+  if (len <= 24) return '10px';
+  if (len <= 28) return '9px';
+  return '8px';
+};
+
 // LocalStorage key prefix for saved game state
 const STORAGE_PREFIX = 'connections.v2.';
 
@@ -244,7 +265,8 @@ function buildBoard() {
       wrap.className = 'group';
       wrap.style.borderLeftColor = g.color || '#43699e';
       wrap.style.gridColumn = 'span 4';
-      wrap.innerHTML = `<div class="title">${escapeHtml(g.category)}</div><div class="words">${g.words.map(escapeHtml).join(' · ')}</div>`;
+      const wordsHtml = g.words.map(w => `<span style="font-size:${calculateFontSize(w)}">${escapeHtml(w)}</span>`).join(' · ');
+      wrap.innerHTML = `<div class="title">${escapeHtml(g.category)}</div><div class="words">${wordsHtml}</div>`;
       b.appendChild(wrap);
     });
   }
@@ -263,7 +285,8 @@ function buildBoard() {
       wrap.className = 'group';
       wrap.style.borderLeftColor = g.color || '#43699e';
       wrap.style.gridColumn = 'span 4';
-      wrap.innerHTML = `<div class="title">${escapeHtml(g.category)}</div><div class="words">${g.words.map(escapeHtml).join(' · ')}</div>`;
+      const wordsHtml = g.words.map(w => `<span style="font-size:${calculateFontSize(w)}">${escapeHtml(w)}</span>`).join(' · ');
+      wrap.innerHTML = `<div class="title">${escapeHtml(g.category)}</div><div class="words">${wordsHtml}</div>`;
       b.appendChild(wrap);
     });
   } else {
@@ -284,6 +307,7 @@ function buildBoard() {
       const d = document.createElement('div');
       d.className = 'card';
       d.textContent = words[i];
+      d.style.fontSize = calculateFontSize(words[i]);
       if (state.selection.has(i)) d.classList.add('selected');
       d.onclick = () => toggle(i, d);
       b.appendChild(d);
@@ -649,10 +673,10 @@ const SAMPLES = [
     {category:'INTERNATIONAL WORDS', color:'yellow', words:['TAXI','HOTEL','RADIO','PIANO']}
   ]},
   {id:'Puzzle 2', groups:[
-    {category:'HOMOPHONES OF NUMBERS', color:'yellow', words:['WON','TOO','FOR','ATE']},
-    {category:'WORDS ENDING IN -OUGH', color:'green', words:['THROUGH','THOUGH','ROUGH','COUGH']},
-    {category:'SAME /U:/ VOWEL SOUND', color:'blue', words:['BLUE','TRUE','CREW','SHOE']},
-    {category:'WORDS WITH SILENT LETTERS', color:'purple', words:['KNIGHT','WRITE','THUMB','LAMB']}
+    {category:'SIT AT THE BAR', color:'purple', words:['MOSS BAY HALL', 'ROCK CREEK', 'BOTTLE AND BULL', 'CENTRAL TAVERN' ]},
+    {category:'PIZZA JOINTS', color:'blue', words:['VONN’S', 'ROCCO’S', 'ACROPOLIS', 'ZEEK’S']},
+    {category:'BREAKFAST', color:'green', words:['GEORGE’S', 'DERU', 'FARINE', 'THE BRIEF ENCOUNTER']},
+    {category:'ITALIAN', color:'yellow', words:['PROSECCO', 'RIMINI', 'PARADISO', 'VOLTERRA']}
   ]},
   {id:'Puzzle 3', groups:[
     {category:'PERCEPTUAL FREQUENCY SCALES', color:'purple', words:['MEL','BARK','ERB','SEMITONE']},
@@ -673,10 +697,10 @@ const SAMPLES = [
     {category:'SYNTACTIC CONSTITUENTS', color:'yellow', words:['CLAUSE','PHRASE','MORPHEME','LEXEME']}
   ]},
   {id:'Puzzle 6', groups:[
-    {category:'TOKENIZATION ALGORITHMS', color:'purple', words:['BPE','WORDPIECE','SENTENCEPIECE','UNIGRAM']},
+    {category:'TOKENIZATION ALGORITHMS', color:'purple', words:['BPE','WORD-PIECE','SENTENCE-PIECE','UNIGRAM']},
     {category:'DECODING STRATEGIES', color:'blue', words:['GREEDY','BEAM','SAMPLING','NUCLEUS']},
-    {category:'ACOUSTIC FEATURES', color:'green', words:['MFCC','FBANK','SPECTROGRAM','WAVEFORM']},
-    {category:'NEURAL ARCHITECTURES', color:'yellow', words:['TRANSFORMER','CONFORMER','LSTM','GRU']}
+    {category:'ACOUSTIC FEATURES', color:'green', words:['MFCC','FBANK','SPECTRO-GRAM','WAVEFORM']},
+    {category:'NEURAL ARCHITECTURES', color:'yellow', words:['TRANS-FORMER','CONFORMER','LSTM','GRU']}
   ]},
   {id:'Puzzle 7', groups:[
     {category:'MEANS "POTATO" (FR/DE/RU/ES)', color:'purple', words:['POMME DE TERRE','KARTOFFEL','КАРТОФЕЛЬ','PATATA']},
@@ -685,15 +709,15 @@ const SAMPLES = [
     {category:'MEANS "LEMON" (FR/DE/RU/ES)', color:'yellow', words:['CITRON','ZITRONE','ЛИМОН','LIMÓN']}
   ]},
   {id:'Puzzle 8', groups:[
-    {category:'PHONOLOGICAL PROCESSES', color:'purple', words:['ASSIMILATION','DISSIMILATION','EPENTHESIS','METATHESIS']},
-    {category:'LINGUISTIC TYPOLOGY', color:'blue', words:['AGGLUTINATIVE','FUSIONAL','ISOLATING','POLYSYNTHETIC']},
+    {category:'PHONOLOGICAL PROCESSES', color:'purple', words:['ASSIMI-LATION','DISSIMI-LATION','EPEN-THESIS','META-THESIS']},
+    {category:'LINGUISTIC TYPOLOGY', color:'blue', words:['AGGLUTI-NATIVE','FUSIONAL','ISOLATING','POLY-SYNTHETIC']},
     {category:'WRITING SYSTEMS', color:'green', words:['ABJAD','ABUGIDA','SYLLABARY','LOGOGRAPHIC']},
-    {category:'SPEECH ERRORS', color:'yellow', words:['SPOONERISM','MALAPROPISM','EGGCORN','MONDEGREEN']}
+    {category:'SPEECH ERRORS', color:'yellow', words:['SPOON-ERISM','MALA-PROPISM','EGGCORN','MONDEGREEN']}
   ]},
   {id:'Puzzle 9', groups:[
-    {category:'LOSS FUNCTIONS IN ASR/TTS', color:'purple', words:['CTC','TRANSDUCER','ATTENTION','FOCAL']},
-    {category:'DATA AUGMENTATION METHODS', color:'blue', words:['SPECAUGMENT','MIXUP','SPEED','VOLUME']},
-    {category:'SPEECH CORPORA', color:'green', words:['LIBRISPEECH','COMMONVOICE','VCTK','LJSPEECH']},
+    {category:'LOSS FUNCTIONS IN ASR/TTS', color:'purple', words:['CTC','TRANS-DUCER','ATTENTION','FOCAL']},
+    {category:'DATA AUGMENTATION METHODS', color:'blue', words:['SPEC-AUGMENT','MIXUP','SPEED','VOLUME']},
+    {category:'SPEECH CORPORA', color:'green', words:['LIBRI-SPEECH','COMMON-VOICE','VCTK','LJSPEECH']},
     {category:'EVALUATION METRICS', color:'yellow', words:['WER','MOS','BLEU','PESQ']}
   ]},
   {id:'Puzzle 10', groups:[
@@ -701,7 +725,13 @@ const SAMPLES = [
     {category:'END-TO-END TTS MODELS', color:'blue', words:['TACOTRON','FASTSPEECH','VITS','GLOWTTS']},
     {category:'SELF-SUPERVISED SPEECH MODELS', color:'green', words:['WAV2VEC','HUBERT','WAVLM','W2V-BERT']},
     {category:'SPEECH SYNTHESIS FEATURES', color:'yellow', words:['PROSODY','SPEAKER','STYLE','EMOTION']}
-  ]}
+  ]},
+  {id:'Puzzle 11', groups:[
+    {category:'HOMOPHONES OF NUMBERS', color:'yellow', words:['WON','TOO','FOR','ATE']},
+    {category:'WORDS ENDING IN -OUGH', color:'green', words:['THROUGH','THOUGH','ROUGH','COUGH']},
+    {category:'SAME /U:/ VOWEL SOUND', color:'blue', words:['BLUE','TRUE','CREW','SHOE']},
+    {category:'WORDS WITH SILENT LETTERS', color:'purple', words:['KNIGHT','WRITE','THUMB','LAMB']}
+  ]},
 ];
 
 /**
