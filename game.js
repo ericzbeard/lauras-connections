@@ -705,7 +705,7 @@ const SAMPLES = [
   {id:'Puzzle 7', groups:[
     {category:'MEANS "POTATO" (FR/DE/RU/ES)', color:'purple', words:['POMME DE TERRE','KARTOFFEL','КАРТОФЕЛЬ','PATATA']},
     {category:'MEANS "ORANGE" (FR/DE/RU/ES)', color:'blue', words:['ORANGE','APFELSINE','АПЕЛЬСИН','NARANJA']},
-    {category:'MEANS "PINEAPPLE" (FR/DE/RU/ES)', color:'green', words:['ANANAS','ANANAS','АНАНАС','PIÑA']},
+    {category:'MEANS "STRAWBERRY" (FR/DE/RU/ES)', color:'green', words:['FRAISE','ERDBEERE','КЛУБНИКА','FRESA']},
     {category:'MEANS "LEMON" (FR/DE/RU/ES)', color:'yellow', words:['CITRON','ZITRONE','ЛИМОН','LIMÓN']}
   ]},
   {id:'Puzzle 8', groups:[
@@ -731,6 +731,12 @@ const SAMPLES = [
     {category:'WORDS ENDING IN -OUGH', color:'green', words:['THROUGH','THOUGH','ROUGH','COUGH']},
     {category:'SAME /U:/ VOWEL SOUND', color:'blue', words:['BLUE','TRUE','CREW','SHOE']},
     {category:'WORDS WITH SILENT LETTERS', color:'purple', words:['KNIGHT','WRITE','THUMB','LAMB']}
+  ]},
+  {id:'Puzzle 12', groups:[
+    {category:'CANADIAN WORDS FOR EVERYDAY ITEMS', color:'purple', words:['PARKADE','SERVIETTE','RUNNERS','TOQUE']},
+    {category:'CANADIAN SLANG & EXPRESSIONS', color:'blue', words:['HOSER','KEENER','EH','ZED']},
+    {category:'CANADIAN MONEY & QUANTITIES', color:'green', words:['MICKEY','TWO-FOUR','LOONIE','TOONIE']},
+    {category:'CANADIAN FOOD & DRINK', color:'yellow', words:['POUTINE','NANAIMO','CAESER','TOURTIERE']}
   ]},
 ];
 

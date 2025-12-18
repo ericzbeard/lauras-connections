@@ -1,0 +1,52 @@
+{
+  "puzzles": [
+    {
+      "id": "Puzzle 1",
+      "words": ["LOCATION", "LECTURE", "SENSIBLE", "AGENDA", "CAFÉ", "MENU", "CHEF", "DEPOT", "CHAT", "PAIN", "COIN", "GIFT", "TAXI", "HOTEL", "RADIO", "PIANO"]
+    },
+    {
+      "id": "Puzzle 2",
+      "words": ["MOSS BAY HALL", "ROCK CREEK", "BOTTLE AND BULL", "CENTRAL TAVERN", "VONN'S", "ROCCO'S", "ACROPOLIS", "ZEEK'S", "GEORGE'S", "DERU", "FARINE", "THE BRIEF ENCOUNTER", "PROSECCO", "RIMINI", "PARADISO", "VOLTERRA"]
+    },
+    {
+      "id": "Puzzle 3",
+      "words": ["MEL", "BARK", "ERB", "SEMITONE", "PITCH", "STRESS", "TONE", "DURATION", "FORMANT", "HARMONIC", "CEPSTRUM", "SPECTRUM", "HERTZ", "DECIBEL", "FRAME", "SAMPLE"]
+    },
+    {
+      "id": "Puzzle 4",
+      "words": ["GIFT", "CADEAU", "GESCHENK", "REGALO", "NAME", "NOM", "NOMBRE", "NOME", "MOT", "WORT", "PALABRA", "PAROLA", "LANGUE", "SPRACHE", "LENGUA", "LINGUA"]
+    },
+    {
+      "id": "Puzzle 5",
+      "words": ["SONORANT", "CONTINUANT", "STRIDENT", "SIBILANT", "LABIAL", "DENTAL", "VELAR", "GLOTTAL", "CREAKY", "BREATHY", "MODAL", "FALSETTO", "CLAUSE", "PHRASE", "MORPHEME", "LEXEME"]
+    },
+    {
+      "id": "Puzzle 6",
+      "words": ["BPE", "WORD-PIECE", "SENTENCE-PIECE", "UNIGRAM", "GREEDY", "BEAM", "SAMPLING", "NUCLEUS", "MFCC", "FBANK", "SPECTRO-GRAM", "WAVEFORM", "TRANS-FORMER", "CONFORMER", "LSTM", "GRU"]
+    },
+    {
+      "id": "Puzzle 7",
+      "words": ["POMME DE TERRE", "KARTOFFEL", "КАРТОФЕЛЬ", "PATATA", "ORANGE", "APFELSINE", "АПЕЛЬСИН", "NARANJA", "FRAISE", "ERDBEERE", "КЛУБНИКА", "FRESA", "CITRON", "ZITRONE", "ЛИМОН", "LIMÓN"]
+    },
+    {
+      "id": "Puzzle 8",
+      "words": ["ASSIMI-LATION", "DISSIMI-LATION", "EPEN-THESIS", "META-THESIS", "AGGLUTI-NATIVE", "FUSIONAL", "ISOLATING", "POLY-SYNTHETIC", "ABJAD", "ABUGIDA", "SYLLABARY", "LOGOGRAPHIC", "SPOON-ERISM", "MALA-PROPISM", "EGGCORN", "MONDEGREEN"]
+    },
+    {
+      "id": "Puzzle 9",
+      "words": ["CTC", "TRANS-DUCER", "ATTENTION", "FOCAL", "SPEC-AUGMENT", "MIXUP", "SPEED", "VOLUME", "LIBRI-SPEECH", "COMMON-VOICE", "VCTK", "LJSPEECH", "WER", "MOS", "BLEU", "PESQ"]
+    },
+    {
+      "id": "Puzzle 10",
+      "words": ["HIFIGAN", "MELGAN", "WAVEGLOW", "PARALLEL-WAVEGAN", "TACOTRON", "FASTSPEECH", "VITS", "GLOWTTS", "WAV2VEC", "HUBERT", "WAVLM", "W2V-BERT", "PROSODY", "SPEAKER", "STYLE", "EMOTION"]
+    },
+    {
+      "id": "Puzzle 11",
+      "words": ["WON", "TOO", "FOR", "ATE", "THROUGH", "THOUGH", "ROUGH", "COUGH", "BLUE", "TRUE", "CREW", "SHOE", "KNIGHT", "WRITE", "THUMB", "LAMB"]
+    },
+    {
+      "id": "Puzzle 12",
+      "words": ["PARKADE", "SERVIETTE", "RUNNERS", "TOQUE", "HOSER", "KEENER", "EH", "ZED", "MICKEY", "TWO-FOUR", "LOONIE", "TOONIE", "POUTINE", "NANAIMO", "CAESER", "TOURTIERE"]
+    }
+  ]
+}
